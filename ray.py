@@ -1,5 +1,6 @@
 import numpy,math
-#comment2
+#
+#comment 3
 class sphere(object):
 	def __init__(self, color, radius, center):
 		self.center=center;
