@@ -1,6 +1,5 @@
 import numpy,math
-#
-#comment 3
+#thing
 class sphere(object):
 	def __init__(self, color, radius, center):
 		self.center=center;
@@ -79,20 +78,24 @@ def dirVec(p1,p2):
 	return([p2[i]-p1[i] for i in range(3)])
 
 def main():
-	room_size=6000
+	room_size=5000
+
 	screen_lims=[room_size/4,3*room_size/4]
 	screen_size=screen_lims[1]-screen_lims[0]
-	camera=[room_size/2,room_size/2,-200]; #camera needs z<0
+	camera=[room_size/2,room_size/2,-screen_size/2]; #camera needs z<0
 	bg_color=[0,0,0];
 	screen=screen_init(screen_lims,bg_color);
 	
-	S1=sphere([0,0,255], room_size/20, [room_size/2-room_size/10,room_size/2-room_size/10,100])
+	#define some objects
+	S1=sphere([0,0,255], room_size/10, [room_size/2+room_size/10,room_size/2+room_size/10,room_size/5])
+	S2=sphere([0,100,255], room_size/20, [room_size/2,room_size/2+room_size/10,room_size/10])
 	top=plane([80,150,150],[0,1,0,0])
 	bottom=plane([150,90,150],[0,1,0,-room_size])
 	back=plane([100,255,200],[0,0,1,-room_size])
 	left=plane([50,20,100],[1,0,0,0])
 	right=plane([50,90,150],[1,0,0,-room_size])
-	objects=[S1,left,right,top,bottom,back]
+
+	objects=[S1,S2,left,right,top,bottom,back]
 
 	for row in screen:
 		for pixel in row:
