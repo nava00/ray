@@ -1,4 +1,5 @@
 import numpy,math
+#comment2
 class sphere(object):
 	def __init__(self, color, radius, center):
 		self.center=center;
@@ -12,7 +13,7 @@ class sphere(object):
 		c=(sum([p[i]**2+self.center[i]**2-2*p[i]*self.center[i] for i in range(3)])-self.radius**2)
 		ans=roots(a,b,c)
 		if(ans==None):
-				return 100000 #large number
+				return -1 #won't be counted as valid distance
 		return min(ans)
 class plane(object):
 	def __init__(self, color,eq):		
@@ -27,7 +28,7 @@ class plane(object):
 		if(not den==0):
 			t=-(self.a*p[0]+self.b*p[1]+self.c*p[2]+self.d)/den
 			return(t)
-		return 1000000 #large number
+		return -1 #won't be counted as valid distance
 class pixel(object):
 	def __init__(self,x,y,color):
 		self.x=x;
@@ -77,36 +78,32 @@ def dirVec(p1,p2):
 	return([p2[i]-p1[i] for i in range(3)])
 
 def main():
-	room_size=1000
+	room_size=6000
 	screen_lims=[room_size/4,3*room_size/4]
 	screen_size=screen_lims[1]-screen_lims[0]
 	camera=[room_size/2,room_size/2,-200]; #camera needs z<0
 	bg_color=[0,0,0];
 	screen=screen_init(screen_lims,bg_color);
 	
-	S1=sphere([0,0,255], room_size/20, [room_size/2-100,room_size/2,100])
+	S1=sphere([0,0,255], room_size/20, [room_size/2-room_size/10,room_size/2-room_size/10,100])
 	top=plane([80,150,150],[0,1,0,0])
 	bottom=plane([150,90,150],[0,1,0,-room_size])
-	back=plane([0,255,0],[0,0,1,-room_size])
+	back=plane([100,255,200],[0,0,1,-room_size])
 	left=plane([50,20,100],[1,0,0,0])
 	right=plane([50,90,150],[1,0,0,-room_size])
 	objects=[S1,left,right,top,bottom,back]
 
 	for row in screen:
 		for pixel in row:
-			t_min=100000000; #large number
+			t_min=100000; #large number
 			ray=[camera, dirVec(camera,[pixel.x,pixel.y,0])]
-			distances=[];
+			distances=[]
 			#check intersection with each ob
 			for ob in objects:
-				
-				#if(t<t_min and t>0):
-				#	pixel.color=ob.color
-				#	t_min=t
-			t=ob.intersection(ray)
-			if(t>0):
-					distances.append(t)
-			pixel.color=objects[numpy.argmin(distances)].color
+				t=ob.intersection(ray)
+				if(t<t_min and t>0):
+					pixel.color=ob.color
+					t_min=t
 
 	#make a white border
 	for i in range(screen_size):
