@@ -1,5 +1,5 @@
 import numpy,math
-#thing
+#the scene can have planes and spheres
 class sphere(object):
 	def __init__(self, color, radius, center):
 		self.center=center;
